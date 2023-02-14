@@ -1,0 +1,425 @@
+#=====importing libraries===========
+from datetime import date
+import datetime
+
+#=====define functions==============
+# Function to register a user 
+    # If the admin selected to register a new user the following code will execute.
+    # The user is prompted to enter a new username, password and then confirm the password.
+    # While loop is used to keep asking for registration information until the passwords match.
+        # If the two passwords match the username and password is written to user.txt.
+        # If the passwords don't match the while loop will ask for the new registration until it matches.
+def reg_user():
+    new_pass = False
+    new_user = False        
+    while new_user == False:
+        print("Please fill in the following to register the new user:")
+        new_username = input("New user username: ")
+        if new_username not in login_dictionary:
+            new_user = True
+        else:
+            print("This user is already registered.")
+            print("Please try again:")
+            print()
+            new_user = False
+    while new_pass == False:
+        new_password = input("New user password: ")
+        password_confirm = input("Confirm password: ")
+        print()
+
+        if new_password == password_confirm:
+            print("Passwords match.")
+            print("Username and password successfully registered.")
+            print()
+            new_pass = True
+            with open("user.txt", "a") as user_file:
+                user_file.write(f"\n{new_username}, {new_password}")
+        else:
+            print("Passwords entered does not match. Please try again:")
+            print()
+            new_pass = False
+
+# Function to add a new task
+    # If the user requested to add a new task.
+    # User is asked a set of questions about the new task.
+    # While loop is used to determine if the user the task needs to be assigned to exists in the user.txt file.
+        # If the user does not exit an error message prints and the user is asked who to assign the task to again.
+        # If the user exists the program executes further questions about the new task.
+        # The task is then written to the tasks.txt file.
+        # Successful addition message prints.
+def add_task():
+    user_list = list(login_dictionary.keys())
+    user_list_check = False
+    print("Please fill in the following to add a new task:")
+    while user_list_check == False:
+        assigned_user = input("Which user do you want to assign the task to? ")
+        if assigned_user in user_list:
+            user_list_check = True
+        else:
+            print('''This user does not exist in the file.
+Please provide a registered user.''')
+            print()
+            user_list_check = False
+        task_title = input("Provide a name for the task: ")
+        task_disc = input("Provide a brief description of the task: ")
+        task_due = input("Task due date (format - dd-mm-yyyy): ")
+        current_date = date.today()
+    with open("tasks.txt", "a") as task_file:
+        task_file.write(f"\n{assigned_user}, {task_title}, {task_disc}, {current_date}, {task_due}, No")
+    print()
+    print("New task successfully created.")
+    print()
+
+# Function to view all tasks.
+    # If the user requested to view all tasks.
+        # For loop is used to iterate over the whole task.txt file.
+        # A print out is given for each task in an easy to read format.
+def view_all():
+    with open ("tasks.txt", "r") as task_file:
+        print("All tasks registered to all users:")
+        print()
+        line = task_file.readlines()
+        task_list = []
+        for index, i in enumerate(line):
+            task_list_split = i.split(", ")
+            task_list.append(task_list_split)
+            task_name = task_list[index][1]
+            task_assign = task_list[index][0]
+            date_assign = task_list[index][3]
+            date_due = task_list[index][4]
+            complete_task = task_list[index][5]
+            task_disc = task_list[index][2]
+            print(f'''Task:\t\t\t\t {task_name}
+Assigned to:\t\t\t {task_assign}
+Date assigned:\t\t\t {date_assign}
+Due date:\t\t\t {date_due}
+Task complete?\t\t\t {complete_task}
+Task description\t\t {task_disc}''')
+            print()
+
+
+# Function to view all logged in users tasks.
+    # If the user requested to view all their own tasks.
+def view_mine():
+    # Task file is opened and read.
+    with open ("tasks.txt", "r+") as task_file:
+        # Printout of which user is looking at their tasks is provided.
+        print(f"All tasks registered to {username}")
+        line = task_file.readlines()
+        task_list = []
+
+        # For loop is used to iterate over the whole task.txt file.
+        for index, i in enumerate(line):
+            task_list_split = i.split(", ")
+            task_list.append(task_list_split)
+            task_list[index][5] = task_list[index][5].strip("\n")
+
+            # Conditional statement is used to print certain tasks based on the username logged in with.
+            # A print out is given for each task in an easy to read format.
+            if task_list[index][0]== username:
+                task_number = (index + 1)
+                task_name = task_list[index][1]
+                task_assign = task_list[index][0]
+                date_assign = task_list[index][3]
+                date_due = task_list[index][4]
+                complete_task = task_list[index][5]
+                task_disc = task_list[index][2]
+                if task_assign == username:
+                    print(f'''Task number:\t\t\t {task_number}
+Task:\t\t\t\t {task_name}
+Assigned to:\t\t\t {task_assign}
+Date assigned:\t\t\t {date_assign}
+Due date:\t\t\t {date_due}
+Task complete?\t\t\t {complete_task}
+Task description\t\t {task_disc}''')
+                    print()
+
+        # User is asked which task they would like to edit.
+        # User receives new menu giving them the option to mark chosen task as complete, edit the user it is assigned to or exit to main menu.
+        # Task file is then updated with edited information.
+        edit_task = int((input('''Select one of your tasks or enter "-1" to return to main menu\n''')))
+        user_change_while = False
+        while user_change_while == False:
+            index = edit_task - 1
+            user_change = input(f'''Please choose from the list below:
+            ed - To edit the person the task is assigned to.
+            upd - To update the due date for the task.
+            complete - To mark the task as complete.
+            -1 - To return to main menu.
+            :\n''').lower()
+            if user_change == "ed":
+                if task_list[index][5] == "No":
+                    task_list[index][0] = input("Enter the username of the user the task is assigned to:\n")
+                    user_change_while = True
+                else:
+                    print("The task you are trying to edit has already been marked as complete.")
+                    print("Please try again.")
+                    print()
+                    user_change_while = False
+            if user_change == "upd":
+                if task_list[index][5] == "No":
+                    task_list[index][4] = input("Provide the new due date (format: dd-mm-yyyy).\n")
+                    user_change_while = True
+                else:
+                    print("The task you are trying to edit has already been marked as complete.")
+                    print("Please try again.")
+                    print()
+                    user_change_while = False
+            if user_change == "complete":
+                if task_list[index][5] == "No":
+                    task_list[index][5] = "Yes\n"
+                    user_change_while = True
+                else:
+                    print("The task you are trying to edit has already been marked as complete.")
+                    print("Please try again.")
+                    print()
+                    user_change_while = False
+            if user_change == "-1":
+                break
+                user_change_while = True
+
+    current_date = date.today()
+    with open("tasks.txt", "w") as write_file:
+        for item in task_list:
+            print(item)
+            write_file.write(", ".join(item)+"\n")
+
+# Function to generate reports.
+def gen_rep ():
+
+    # Open both task file and user file to read.
+    with open("tasks.txt", "r") as task_file, open("user.txt", "r") as user_file:
+        # Create zero variables for count data.
+        amount_comp = 0
+        amount_incomp = 0
+        incom_overd = 0
+        total_user_task = 0
+        user_task_comp = 0
+        user_task_incomp = 0
+        user_overd = 0 
+
+        # Create empty list to read in data from tasks file and enumerate each line.
+        tasks_ = []
+        line = task_file.readlines()
+        task_list = []
+        all_tasks = len(line)
+
+        for index, i in enumerate(line):
+            task_list_split = i.split(", ")
+            task_list.append(task_list_split)
+            task_list[index][5] = task_list[index][5].strip("\n")
+            task_completeness = task_list[index][5]
+            due_date = task_list[index][4]
+            username_task = task_list[index][0]
+            today_date = date.today()
+            today_date = today_date.strftime('%d-%m-%Y')
+
+            # If functions used to count variables based on specific specifications.
+            if task_completeness == "Yes":
+                amount_comp += 1
+            if task_completeness == "No":
+                amount_incomp +=1
+            if (due_date < today_date) and task_completeness == "No":
+                incom_overd +=1
+
+        perc_overd = round((float((incom_overd/all_tasks)*100)),2)
+        perc_incomp = round((float((amount_incomp/all_tasks)*100)),2)
+
+        with open("task_overview.txt", "w") as task_write_file:
+            task_write_file.write(f'''Task statistics:
+            Total number of tasks: {all_tasks}
+            Total amount of tasks completed: {amount_comp}
+            Total amount of tasks incompleted: {amount_incomp}
+            Total amount of tasks overdue: {incom_overd}
+            Total percentage of incomplete tasks: {perc_incomp}%
+            Total percentage of overdue tasks: {perc_overd}%
+            ------------------------------------------------------\n''')
+        
+        # Create empty dictionaries to store count variables for each user registered.
+        user_dict = {}
+        user_dict_comp_tasks = {}
+        user_dict_incomp_tasks = {}
+        user_dict_overd_tasks = {}
+
+        # Use data from user file to assign zero variable to each user for all statisticts needed.
+        for line in user_file:
+            (k,v) = line.split(", ")
+            user_dict[(k)] = 0
+            user_dict_comp_tasks[(k)] = 0
+            user_dict_incomp_tasks[(k)] = 0
+            user_dict_overd_tasks[(k)] = 0
+         
+        # For loops used to count each aspect and to add it to each respective dictionary.
+        for key, value in user_dict.items():
+            for i in task_list:
+                if key == i[0]:
+                    value = value + 1
+                    user_dict.update({key:value})
+        for key, value in user_dict_comp_tasks.items():
+            for i in task_list:
+                if key == i[0]  and i[5] =="Yes":
+                    value = value + 1
+                    user_dict_comp_tasks.update({key:value})
+        for key, value in user_dict_incomp_tasks.items():
+            for i in task_list:
+                if key == i[0]  and i[5] =="No":
+                    value = value + 1
+                    user_dict_incomp_tasks.update({key:value})
+        for key, value in user_dict_overd_tasks.items():
+            for i in task_list:
+                if key == i[0]  and i[5] =="No" and i[4] < today_date:
+                    value = value + 1
+                    user_dict_overd_tasks.update({key:value})
+
+        # Zero variables created for each print needed.
+        print_user = ""
+        print_all_tasks = 0
+        print_comp_task = 0
+        print_incomp_task = 0
+        print_overd_task = 0
+        print_perc_comp = 0
+        print_perc_incomp = 0
+        print_perc_overdue = 0
+        
+        # For loops used to count each print variable and to calculate percentages needed.
+        for key, value in user_dict.items():
+            print_user = key
+            print_all_tasks = value
+            for key, value in user_dict_comp_tasks.items():
+                if print_user == key:
+                    print_comp_task = value
+                    print_perc_comp = round((float((print_comp_task/print_all_tasks)*100)),2)
+            for key, value in user_dict_incomp_tasks.items():
+                if print_user == key:
+                    print_incomp_task = value
+                    print_perc_incomp = round((float((print_incomp_task/print_all_tasks)*100)),2)
+            for key, value in user_dict_overd_tasks.items():
+                if print_user == key:
+                    print_overd_task = value
+                    print_perc_overdue = float((print_overd_task/print_all_tasks)*100)
+            
+            # Open a new txt file and write all user data to it.
+            with open("user_overview.txt", "a") as user_write_file:
+                user_write_file.write(f'''{print_user} task statistics:
+            ---------------------------------------------------
+            Number of tasks assigned to user: {print_all_tasks}
+            Number of completed tasks: {print_comp_task}
+            Number of incompleted tasks: {print_incomp_task}
+            Number of overdue tasks: {print_overd_task}
+            Percentage of completed tasks: {print_perc_comp}%
+            Percentage of incompleted tasks: {print_perc_incomp}%
+            Percentage of overdue tasks: {print_perc_overdue}%
+            ---------------------------------------------------\n''')
+
+    print("Reports have been generated.")
+    print()
+
+# Function to show statistics to the admin
+def stats():
+    # Exception is added for FileNotFoundError.
+    # If files for reports cannot be found they must first be created.
+    # Data is then printed out.
+    try:
+        with open("task_overview.txt", "r") as task_file, open("user_overview.txt", "r") as user_file:
+            task_lines = task_file.read()
+            user_lines = user_file.read()
+            print(task_lines)
+            print()
+            print(user_lines)
+    except FileNotFoundError:
+        gen_rep()
+        with open("task_overview.txt", "r") as task_file, open("user_overview.txt", "r") as user_file:
+            task_lines = task_file.read()
+            user_lines = user_file.read()
+            print(task_lines)
+            print(user_lines)
+
+#====Login Section==================
+# User is prompted to enter username and password.
+# Empty dictionary is created to store usernames and passwords.
+print("Input your registered username and password:")
+complete = False
+login_dictionary = {}
+
+# File is opened to read.
+    # For loop used to read lines and input into a dictionary.
+    # While loop used to continuously ask for username and password until it matches the key:value pairs in the dictionary.
+        # When username and password is correct the program breaks and moves on.
+        # When the username or password is correct but not both, different error messages are printed out and user is asked to retry entry.
+with open("user.txt", "r") as userlist:
+    for line in userlist:
+        key,value = line.split(", ")
+        value = value.strip()
+        login_dictionary[key] = value
+    while complete == False:
+        username = input("Username: ")
+        password = input("Password: ")
+        print()
+        if username in login_dictionary and password == login_dictionary[username]: 
+            complete = True
+            print ("Credentials correct.")
+            print()
+            break
+        elif username in login_dictionary and password != login_dictionary[username]:
+            complete = False
+            print ("Password does not match username.")
+            print()
+            continue
+        else:
+            print ("Username and password not registered.")
+            print()
+            complete = False
+            continue
+
+# When the credentials entered by user is correct this part will happen.
+    # If statement used to determine if the user is the admin.
+    # If the admin is logged in they can register a user and see statistics along with all other options.
+    # If any user other than the admin is logged in they can only view and add tasks.
+while True:
+    if username == "admin":
+        menu = input('''Please select one of the following options:
+        r - Registering a user
+        a - Adding a task
+        va - View all tasks
+        vm - View my task
+        gr - generate reports
+        ds - display statistics
+        e - Exit
+        : ''').lower()
+        print()
+    else:
+        menu = input('''Please select one of the following options:
+        a - Adding a task
+        va - View all tasks
+        vm - View my task
+        e - Exit
+        : ''').lower()
+        print()
+
+    if menu == 'r':
+        reg_user()
+
+    elif menu == 'a':
+        add_task()
+
+    elif menu == 'va':
+        view_all()
+
+    elif menu == 'vm':
+        view_mine()
+
+    elif menu == 'gr':
+        gen_rep ()
+    
+    elif menu == 'ds':
+        stats()
+
+    elif menu == 'e':
+        print('Goodbye!!!')
+        exit()
+
+    # An error message prints if the user did not select any of the available choices.
+    else:
+        print("You have made a wrong choice, Please Try again")     
+
+ 
