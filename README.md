@@ -5,12 +5,12 @@ A program with a login portion to manage a teams tasks within an organization.
 Different menus for admin and employee use.
 The program helps with task subsetting and user task completion tracking.
 
-##Table of Contents
+## Table of Contents
 1. Installation
 1. Usage
 1. Credits
 
-##Installation
+## Installation
 The code can be copied into any code editor.
 Comments are available in the code to explain what each section does.
 
@@ -20,7 +20,7 @@ user registration and task saving.
 User can use username "admin" and password "adm1n" to access all sections of the program, as a different menue 
 is given to non administrative users.
 
-##Usage
+## Usage
 Users first need to log into program with details as described above. 
 ![login_admin_menu](https://user-images.githubusercontent.com/125367266/226473434-2b8bb57f-dd4b-498f-8762-67a35bfca4dc.JPG)
 
@@ -63,5 +63,5 @@ If the logged in user is not an admin, they receive a smaller menu consisting of
 ![non_admin_menu](https://user-images.githubusercontent.com/125367266/226473682-9dedcedc-70af-4424-a24a-6d21abc40779.JPG)
 
 
-##Credits
+## Credits
 This project was created by Christopher Barnard (ChrisTheFish96)
