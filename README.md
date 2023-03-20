@@ -26,8 +26,8 @@ Users first need to log into program with details as described above.
 
 This gives the user access to the admin menu with options to:
 1. Register a user
-    1.A user will be asked for a username and password and to confirm the password, if passwords match, the username and password will be saved to the user.txt file and can be used for login. 
-    1.B If passwords doesn't match or the username already exists a relevant error message is printed.
+    * user will be asked for a username and password and to confirm the password, if passwords match, the username and password will be saved to the user.txt file and can be used for login. 
+    * If passwords doesn't match or the username already exists a relevant error message is printed.
 ![register_user](https://user-images.githubusercontent.com/125367266/226473475-cc955f35-0b07-4bdc-995d-4ffbfb7b40df.JPG)
 
 1. Add new tasks
