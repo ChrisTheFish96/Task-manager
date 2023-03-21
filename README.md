@@ -32,7 +32,7 @@ This gives the user access to the admin menu with options to:
 * Add new tasks
    * User will be asked which user they want to assign the task to.
    * Then they must specify a name and description for the task as well as a due date.
-   * If the user doesn't exist a relevant error message is printed
+   * If the user doesn't exist a relevant error message is printed.
 
 ![add_tasks](https://user-images.githubusercontent.com/125367266/226473493-0ce29cba-a37b-40e0-99c8-0303818efa6e.JPG)
 
@@ -42,21 +42,21 @@ This gives the user access to the admin menu with options to:
 ![all_tasks](https://user-images.githubusercontent.com/125367266/226473544-76ff961b-b348-49ea-b08a-47314bcf9051.JPG)
 
 * View all tasks given to the admin user
-    * All tasks from the logged in user is displayed in an easy-to-read format
+    * All tasks from the logged in user is displayed in an easy-to-read format.
     * Users can then edit a task of their choice - they can edit the person it is assigned to,
-    update the due date or mark it as complete
+    update the due date or mark it as complete.
     
 ![my tasks](https://user-images.githubusercontent.com/125367266/226473585-9a50081a-7703-4585-8a6a-59dd574a999c.JPG)
 
 * Generate reports
-    * Creates a .txt file called user_overview
+    * Creates a .txt file called user_overview.
     * This provides the user with statistics of each user registered on the system.
     * Provides the number of tasks assigned to the user, how many of these are complete and incomplete as well as percentages of each. There are also the number overdue tasks as well as a percentage of these.
 
 ![user_overview_file](https://user-images.githubusercontent.com/125367266/226473610-7c89cec6-712f-4388-8842-14d300a674b5.JPG)
 
 * Display statistics
-    * This provides the same data from generate reports but it does not create a .txt file, it just prints the information to the terminal for easy access
+    * This provides the same data from generate reports but it does not create a .txt file, it just prints the information to the terminal for easy access.
     * Also provides an overview with all tasks on the system, number of complete, incomplete and 
     overdue tasks as well as the percentage of each.
     
