@@ -3,7 +3,7 @@
 ## Description
 A program with a login portion to manage a team's tasks within an organization. 
 Different menus for admin and employee use.
-The program helps with task sub setting and user task completion tracking.
+The program helps with task subsetting and user task completion tracking.
 
 ## Table of Contents
 1. Installation
