@@ -181,7 +181,6 @@ Task description\t\t {task_disc}''')
     current_date = date.today()
     with open("tasks.txt", "w") as write_file:
         for item in task_list:
-            print(item)
             write_file.write(", ".join(item)+"\n")
 
 # Function to generate reports.
@@ -248,7 +247,6 @@ def gen_rep ():
             user_dict_comp_tasks[(k)] = 0
             user_dict_incomp_tasks[(k)] = 0
             user_dict_overd_tasks[(k)] = 0
-         
         # For loops used to count each aspect and to add it to each respective dictionary.
         for key, value in user_dict.items():
             for i in task_list:
@@ -422,4 +420,3 @@ while True:
     else:
         print("You have made a wrong choice, Please Try again")     
 
- 
